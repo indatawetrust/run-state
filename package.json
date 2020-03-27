@@ -1,6 +1,6 @@
 {
   "name": "run-state",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Experimental state management package with useReducer",
   "main": "build/index.cjs.js",
   "module": "build/index.esm.js",
@@ -9,6 +9,9 @@
   "files": [
     "build"
   ],
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
     "build": "npx rollup -c",
     "codecov": "npx codecov",
@@ -54,6 +57,7 @@
     "autoprefixer": "^9.7.4",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-minify": "^0.5.1",
     "codecov": "^3.6.5",
     "css-loader": "^3.4.2",
@@ -70,9 +74,13 @@
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "jest-transform-css": "^2.0.0",
+    "jsdom": "16.2.1",
+    "jsdom-global": "3.0.2",
     "marked": "^0.8.0",
     "node-sass": "^4.13.1",
     "postcss": "^7.0.27",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.0",
     "rollup": "^2.0.0",
     "rollup-plugin-babel": "^4.3.3",
