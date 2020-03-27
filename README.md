@@ -9,30 +9,17 @@ import React, { useEffect } from 'react';
 import { useData, RunStateProvider } from 'run-state';
 
 const Demo = () => {
-  const { getState, run } = useData();
+  const { getState, runAction } = useData();
 
   useEffect(() => {
-    run(
-      "GET_POST",
-      new Promise((resolve) => {
-        setTimeout(() => {
-          fetch("https://jsonplaceholder.typicode.com/posts/1")
-          .then(response => {
-            return response.json();
-          })
-          .then(resolve)
-        }, 5000)
-      })
-    )
+    runAction("GET_POST", 1);
   }, []);
 
-  const { loading, data } = getState('GET_POST');
+  const { loading, data } = getState("GET_POST");
 
   return (
     <div>
-      {
-        loading ? '⌛' : '✅'
-      }
+      {loading ? "⌛" : "✅"}
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
   );
@@ -41,21 +28,33 @@ const Demo = () => {
 const AnotherDemo = () => {
   const { getState } = useData();
 
-  const { loading, data } = getState('GET_POST');
+  const { loading, data } = getState("GET_POST");
 
   return (
-    <div style={{ padding: '1rem', border: 'solid 1rem #ccc' }}>
-      {
-        loading ? '⌛' : '✅'
-      }
+    <div style={{ padding: "1rem", border: "solid 1rem #ccc" }}>
+      {loading ? "⌛" : "✅"}
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </div>
   );
-}
+};
 
 export default function App() {
   return (
-    <RunStateProvider>
+    <RunStateProvider store={{
+      GET_POST: {
+        action: (id) => (
+          new Promise(resolve => {
+            setTimeout(() => {
+              fetch("https://jsonplaceholder.typicode.com/posts/" + id)
+                .then(response => {
+                  return response.json();
+                })
+                .then(data => resolve(data));
+            }, 1000);
+          })
+        )
+      }
+    }}>
       <Demo />
       <AnotherDemo />
     </RunStateProvider>
