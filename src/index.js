@@ -76,8 +76,16 @@ export const RunStateProvider = ({ children, store }) => {
     dispatch({ type: 'pending', key });
 
     return (isPromise(promise) ? promise : Promise.resolve(promise))
-      .then((data) => dispatch({ type: 'fulfilled', key, payload: data }))
-      .catch(() => dispatch({ type: 'rejected', key }));
+      .then((data) => {
+        dispatch({ type: 'fulfilled', key, payload: data });
+
+        return data;
+      })
+      .catch((error) => {
+        dispatch({ type: 'rejected', key });
+
+        return error;
+      });
   };
 
   const getState = (key) => state.pockets[key] || initialDataState;
