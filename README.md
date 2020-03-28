@@ -38,23 +38,25 @@ const AnotherDemo = () => {
   );
 };
 
+const store = {
+  GET_POST: {
+    action: (id) => (
+      new Promise(resolve => {
+        setTimeout(() => {
+          fetch("https://jsonplaceholder.typicode.com/posts/" + id)
+            .then(response => {
+              return response.json();
+            })
+            .then(data => resolve(data));
+        }, 1000);
+      })
+    )
+  }
+};
+
 export default function App() {
   return (
-    <RunStateProvider store={{
-      GET_POST: {
-        action: (id) => (
-          new Promise(resolve => {
-            setTimeout(() => {
-              fetch("https://jsonplaceholder.typicode.com/posts/" + id)
-                .then(response => {
-                  return response.json();
-                })
-                .then(data => resolve(data));
-            }, 1000);
-          })
-        )
-      }
-    }}>
+    <RunStateProvider store={store}>
       <Demo />
       <AnotherDemo />
     </RunStateProvider>
