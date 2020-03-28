@@ -22,7 +22,7 @@ const RunStateContext = createContext(null);
  * @param   {object} value  new value
  * @return  {object}        state
  */
-const updateState = (state, key, value = {}) => ({
+const updateGlobalState = (state, key, value = {}) => ({
   ...state,
   pockets: {
     ...state.pockets,
@@ -45,16 +45,16 @@ const reducer = (state, { type, key, payload }) => {
 
   switch (type) {
     case 'pending':
-      return updateState(state, key, {
+      return updateGlobalState(state, key, {
         loading: true,
       });
     case 'fulfilled':
-      return updateState(state, key, {
+      return updateGlobalState(state, key, {
         loading: false,
         data: payload,
       });
     case 'rejected':
-      return updateState(state, key, {
+      return updateGlobalState(state, key, {
         loading: false,
         error: true,
       });
@@ -80,11 +80,40 @@ export const RunStateProvider = ({ children, store }) => {
       .catch(() => dispatch({ type: 'rejected', key }));
   };
 
+  const getState = (key) => state.pockets[key] || initialDataState;
+
+  const updateState = (key, listener) => {
+    const { data } = getState(key);
+
+    const listenerData = listener(data);
+
+    let payload = data;
+
+    if (
+      typeof payload === 'object'
+      && typeof listenerData === 'object'
+    ) {
+      payload = ({
+        ...payload,
+        ...listenerData,
+      });
+    } else {
+      payload = listenerData;
+    }
+
+    return dispatch({
+      key,
+      type: 'fulfilled',
+      payload,
+    });
+  };
+
   return (
     <RunStateContext.Provider
       value={{
         runAction,
-        getState: (key) => state.pockets[key] || initialDataState,
+        getState,
+        updateState,
       }}
     >
       {children}

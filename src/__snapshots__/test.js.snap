@@ -5,9 +5,16 @@ exports[`<RunStateProvider /> <DemoFulfilled /> renders correctly 1`] = `
   <h1 />
   <span />
   <button
+    id="action"
     onClick={[Function]}
   >
-    get
+    action
+  </button>
+  <button
+    id="update"
+    onClick={[Function]}
+  >
+    update
   </button>
 </div>
 `;
@@ -17,9 +24,35 @@ exports[`<RunStateProvider /> <DemoRejected /> renders correctly 1`] = `
   <h1 />
   <span />
   <button
+    id="action"
     onClick={[Function]}
   >
-    get
+    action
+  </button>
+  <button
+    id="update"
+    onClick={[Function]}
+  >
+    update
+  </button>
+</div>
+`;
+
+exports[`<RunStateProvider /> <DemoUpdateState /> renders correctly 1`] = `
+<div>
+  <h1 />
+  <span />
+  <button
+    id="action"
+    onClick={[Function]}
+  >
+    action
+  </button>
+  <button
+    id="update"
+    onClick={[Function]}
+  >
+    update
   </button>
 </div>
 `;

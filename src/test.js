@@ -15,17 +15,20 @@ console.error = (...args) => {
 
 describe('<RunStateProvider />', () => {
   const DemoChild = () => {
-    const { getState, runAction } = useData();
-
-    const handleClick = () => runAction('TEST');
+    const { getState, updateState, runAction } = useData();
 
     const { data, error } = getState('TEST');
+
+    const handleAction = () => runAction('TEST');
+
+    const handleUpdate = () => updateState('TEST', text => text.toUpperCase())
 
     return (
       <div>
         <h1>{data}</h1>
         <span>{error && 'oh sh*t'}</span>
-        <button onClick={handleClick}>get</button>
+        <button id="action" onClick={handleAction}>action</button>
+        <button id="update" onClick={handleUpdate}>update</button>
       </div>
     );
   };
@@ -40,7 +43,7 @@ describe('<RunStateProvider />', () => {
 
   it('<DemoFulfilled /> mount test', (done) => {
     const wrapper = mount(<DemoFulfilled />);
-    wrapper.find('button').simulate('click');
+    wrapper.find('#action').simulate('click');
 
     setTimeout(() => {
       expect(wrapper.find('h1').text()).toBe('hello world');
@@ -63,7 +66,7 @@ describe('<RunStateProvider />', () => {
 
   it('<DemoRejected /> mount test', (done) => {
     const wrapper = mount(<DemoRejected />);
-    wrapper.find('button').simulate('click');
+    wrapper.find('#action').simulate('click');
 
     setTimeout(() => {
       expect(wrapper.find('span').text()).toBe('oh sh*t');
@@ -74,6 +77,32 @@ describe('<RunStateProvider />', () => {
 
   it('<DemoRejected /> renders correctly', () => {
     const tree = renderer.create(<DemoRejected />).toJSON();
+
+    expect(tree).toMatchSnapshot();
+  });
+
+  const DemoUpdateState = () => (
+    <RunStateProvider store={{ TEST: { action: () => Promise.resolve('hello world') } }}>
+      <DemoChild />
+    </RunStateProvider>
+  );
+
+  it('<DemoUpdateState /> mount test', (done) => {
+    const wrapper = mount(<DemoUpdateState />);
+
+    wrapper.find('#action').simulate('click');
+
+    setTimeout(() => {
+      wrapper.find('#update').simulate('click');
+
+      expect(wrapper.find('h1').text()).toBe('HELLO WORLD');
+
+      setImmediate(done);
+    });
+  });
+
+  it('<DemoUpdateState /> renders correctly', () => {
+    const tree = renderer.create(<DemoUpdateState />).toJSON();
 
     expect(tree).toMatchSnapshot();
   });

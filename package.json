@@ -1,6 +1,6 @@
 {
   "name": "run-state",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Experimental state management package with useReducer",
   "main": "build/index.cjs.js",
   "module": "build/index.esm.js",
