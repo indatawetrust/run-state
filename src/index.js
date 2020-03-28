@@ -1,7 +1,7 @@
 import React, { useReducer, useContext, createContext } from 'react';
 import PropTypes from 'prop-types';
 
-const isPromise = value => Boolean(value && typeof value.then === 'function');
+const isPromise = (value) => Boolean(value && typeof value.then === 'function');
 
 const initialDataState = {
   data: null,
@@ -76,7 +76,7 @@ export const RunStateProvider = ({ children, store }) => {
     dispatch({ type: 'pending', key });
 
     return (isPromise(promise) ? promise : Promise.resolve(promise))
-      .then(data => dispatch({ type: 'fulfilled', key, payload: data }))
+      .then((data) => dispatch({ type: 'fulfilled', key, payload: data }))
       .catch(() => dispatch({ type: 'rejected', key }));
   };
 
@@ -84,7 +84,7 @@ export const RunStateProvider = ({ children, store }) => {
     <RunStateContext.Provider
       value={{
         runAction,
-        getState: key => state.pockets[key] || initialDataState,
+        getState: (key) => state.pockets[key] || initialDataState,
       }}
     >
       {children}
@@ -94,7 +94,7 @@ export const RunStateProvider = ({ children, store }) => {
 
 RunStateProvider.propTypes = {
   children: PropTypes.node.isRequired,
-  /*eslint react/no-unused-prop-types:0*/
+  /* eslint react/no-unused-prop-types:0 */
   store: PropTypes.object.isRequired,
 };
 

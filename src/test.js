@@ -1,7 +1,8 @@
+/* eslint-disable */
 import React from 'react';
-import { mount} from 'enzyme';
-import { useData, RunStateProvider } from './index.js';
+import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
+import { useData, RunStateProvider } from './index.js';
 import 'jsdom-global/register';
 
 const originalConsoleError = console.error;
@@ -13,7 +14,6 @@ console.error = (...args) => {
 };
 
 describe('<RunStateProvider />', () => {
-
   const DemoChild = () => {
     const { getState, runAction } = useData();
 
@@ -31,12 +31,14 @@ describe('<RunStateProvider />', () => {
   };
 
   const DemoFulfilled = () => (
-    <RunStateProvider store={{ TEST: { action: () => Promise.resolve('hello world') } }}>
+    <RunStateProvider
+      store={{ TEST: { action: () => Promise.resolve('hello world') } }}
+    >
       <DemoChild />
     </RunStateProvider>
   );
 
-  it('<DemoFulfilled /> mount test', done => {
+  it('<DemoFulfilled /> mount test', (done) => {
     const wrapper = mount(<DemoFulfilled />);
     wrapper.find('button').simulate('click');
 
@@ -48,9 +50,7 @@ describe('<RunStateProvider />', () => {
   });
 
   it('<DemoFulfilled /> renders correctly', () => {
-    const tree = renderer
-      .create(<DemoFulfilled />)
-      .toJSON();
+    const tree = renderer.create(<DemoFulfilled />).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
@@ -61,7 +61,7 @@ describe('<RunStateProvider />', () => {
     </RunStateProvider>
   );
 
-  it('<DemoRejected /> mount test', done => {
+  it('<DemoRejected /> mount test', (done) => {
     const wrapper = mount(<DemoRejected />);
     wrapper.find('button').simulate('click');
 
@@ -73,11 +73,8 @@ describe('<RunStateProvider />', () => {
   });
 
   it('<DemoRejected /> renders correctly', () => {
-    const tree = renderer
-      .create(<DemoRejected />)
-      .toJSON();
+    const tree = renderer.create(<DemoRejected />).toJSON();
 
     expect(tree).toMatchSnapshot();
   });
-
 });
