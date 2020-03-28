@@ -85,21 +85,7 @@ export const RunStateProvider = ({ children, store }) => {
   const updateState = (key, listener) => {
     const { data } = getState(key);
 
-    const listenerData = listener(data);
-
-    let payload = data;
-
-    if (
-      typeof payload === 'object'
-      && typeof listenerData === 'object'
-    ) {
-      payload = ({
-        ...payload,
-        ...listenerData,
-      });
-    } else {
-      payload = listenerData;
-    }
+    const payload = listener(data) || data;
 
     return dispatch({
       key,
