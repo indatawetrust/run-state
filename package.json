@@ -78,7 +78,7 @@
     "jsdom-global": "3.0.2",
     "marked": "^0.8.0",
     "node-sass": "^4.13.1",
-    "postcss": "^7.0.27",
+    "postcss": "^8.2.10",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.0",
